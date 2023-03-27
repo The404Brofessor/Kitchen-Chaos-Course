@@ -28,7 +28,27 @@ public class ClearCounter : BaseCounter //this means as it is not just Monobehav
             //there is a KitchenObject here
             if (player.HasKitchenObject())
             {
-              //player IS Carrying something
+                //player IS Carrying something
+                if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObjects plateKitchenObjects))
+                {
+                    //Player is Holding a Plate
+                    if (plateKitchenObjects.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                    {
+                        GetKitchenObject().DestroySelf();                        
+                    }                   
+                }
+                else
+                {
+                    //Player is not carrying a Plate but something else
+                    if (GetKitchenObject().TryGetPlate(out PlateKitchenObjects plateKitchenObject))
+                    {
+                        //counter IS holding a Plate
+                        if (plateKitchenObject.TryAddIngredient(player.GetKitchenObject().GetKitchenObjectSO()))
+                        {
+                            player.GetKitchenObject().DestroySelf();
+                        }
+                    }
+                }
             }
             else
             { 
