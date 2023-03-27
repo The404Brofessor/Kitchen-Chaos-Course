@@ -11,4 +11,7 @@ public class TrashCounter : BaseCounter
             player.GetKitchenObject().DestroySelf();
         }
     }
+
+    //testing GitHub repository
+
 }
