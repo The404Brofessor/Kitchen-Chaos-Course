@@ -19,9 +19,9 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     //static means that it belongs to the "player-CLASS" itself instead of any "instances" of it (when using "new" keyword to pass in NEW information as a NEW instance of that class. IE. "GameInput" for multiple inputs from different sources. Gamepad, Keyboard, etc.
     //Keyboard "WASD" inputs would be the base template and take the information from the gamepad, to MAKE an INSTANCE of the GameInput for the Gamepad.
     public static Player Instance { get; private set; } //by setting the "instance" to public we allow the instance to be accessed and "read" but placing private on the "set" we do NOT allow outside code to "write-over" the instance.
-    //Applicable to player HP, where if P1 was poisoned, it would not ALSO affect P2 because the private set would not allow it to directly impact the base HP method, but could READ what that Max HP is.
-    
+                                                        //Applicable to player HP, where if P1 was poisoned, it would not ALSO affect P2 because the private set would not allow it to directly impact the base HP method, but could READ what that Max HP is.
 
+    public event EventHandler OnPickedSomething;
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged; //A type of event that comes with extra information data (obj/class sender of the event and event args [a class to be inherited to "pass-in" extra information added elsewhere])
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
@@ -285,6 +285,11 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public void SetKitchenObject(KitchenObject kitchenObject)
     {
         this.kitchenObject = kitchenObject;
+
+        if (kitchenObject != null) 
+        { 
+            OnPickedSomething?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public KitchenObject GetKitchenObject()
